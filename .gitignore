@@ -81,3 +81,6 @@ coverage/
 # === Testing ===
 playwright-report/
 test-results/
+
+# Environment variables
+.env
