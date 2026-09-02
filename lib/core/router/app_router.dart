@@ -9,6 +9,8 @@ import '../../screens/officer/manual_classification_screen.dart';
 import '../../screens/officer/sealed_evidence_screen.dart';
 import '../../screens/officer/emergency_capture_screen.dart';
 import '../../screens/sync/sync_center_screen.dart';
+import '../services/auth_service.dart';
+import '../../screens/officer/live_map_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/officer/dashboard',
@@ -60,6 +62,10 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/vault/scan',
       builder: (context, state) => const VaultScanScreen(),
+    ),
+    GoRoute(
+      path: '/officer/map',
+      builder: (context, state) => const LiveMapScreen(),
     ),
   ],
 );
