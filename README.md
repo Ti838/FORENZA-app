@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/images/logo.png" alt="FORENZA Logo" width="120" onerror="this.src='https://via.placeholder.com/120?text=FORENZA'" />
+  <img src="assets/logo.png" alt="FORENZA Logo" width="120" onerror="this.src='https://via.placeholder.com/120?text=FORENZA'" />
   <h1>FORENZA Android Field Application</h1>
   <p><strong>Secure Evidence. Verified Chain. Defensible Truth.</strong></p>
 
