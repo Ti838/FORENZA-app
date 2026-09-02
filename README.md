@@ -1,88 +1,74 @@
-<div align="center">
+# FORENZA Android Field Application
 
-  <img src="assets/logo.png" alt="FORENZA App" width="130" style="border-radius: 50%; box-shadow: 0 0 30px rgba(56, 189, 248, 0.4);" />
+![FORENZA](https://via.placeholder.com/800x200.png?text=FORENZA+Field+Operations)
 
-  <br/><br/>
+FORENZA is a professional-grade forensic evidence chain-of-custody and tamper-evident mobile application. Designed for field officers and investigators, it provides secure, offline-capable evidence capture, cryptographic integrity verification, and secure custody transfers.
 
-  # 🛡️ FORENZA MOBILE APP
-  ### *Zero-Trust Evidence Chain-of-Custody & Tamper-Evident Android Field Client*
+## 🚀 Major Features
+- **Secure Evidence Capture:** High-resolution photos with embedded, tamper-evident metadata.
+- **Cryptographic Hashing (SHA-256):** Hashes are generated in-memory at the moment of capture to ensure absolute data integrity.
+- **Offline Vault:** AES-256 encrypted local storage allows officers to operate in complete isolation (zero network connectivity).
+- **Intelligent Synchronization:** Idempotent, collision-resistant queue synchronization when network is restored.
+- **Chain of Custody (QR):** Securely transfer physical evidence custody between officers using QR code handovers.
+- **Geofencing & Timestamping:** Immutable GPS and time logic tied to every action.
 
-</div>
+## 🛠 Technology Stack
+- **Framework:** Flutter (>=3.16.0)
+- **Language:** Dart (>=3.2.0)
+- **State Management:** Riverpod
+- **Routing:** GoRouter
+- **Storage/DB:** SharedPreferences (Encrypted), SQLite
+- **Security:** Dart Crypto (SHA-256)
 
----
+## 🏗 Architecture
+The app follows a strict Domain-Driven Design (DDD) layered architecture, separating UI (Presentation) from Business Logic (Core) and External Interfaces (API/Storage). 
 
-## 📌 Executive Summary
+Please see the comprehensive [Android Architecture Documentation](docs/ANDROID_ARCHITECTURE.md) for Mermaid diagrams and data flows.
 
-**FORENZA APP** is the mobile field client of the FORENZA suite. Built with Flutter, it enables field investigators to securely capture evidence, track GPS coordinates, and maintain a mathematically defensible chain of custody—even offline.
-
----
-
-## ⚡ Key Highlights
-
-| Feature | Description |
-| :--- | :--- |
-| **Offline Sealing** | AES-256-GCM + Monotonic Sequence Counters for secure offline evidence capture. |
-| **Tamper-Evident Capture** | SHA-256 integrity hashing directly on the device. |
-| **Field-Optimized UX** | Camera-first workflows, GPS integration, and offline queueing. |
-
----
-
-## 🏛️ System Architecture
-
-FORENZA APP is built with **Flutter** for Android, integrating tightly with device hardware.
-
-- **Frontend**: Flutter, Riverpod, GoRouter.
-- **Hardware Integration**: Camera, Geolocator, Mobile Scanner (QR).
-- **Backend Sync**: Supabase Flutter SDK for synchronization with the master database.
-
----
-
-## 🚀 Quickstart & Deployment
+## ⚙️ Setup & Installation
 
 ### Prerequisites
-* **Flutter SDK:** `>=3.16.0`
-* **Android Studio / SDK:** Configured for Android development.
+- Android Studio (Ladybug or newer)
+- Flutter SDK & Dart SDK
+- Physical Android device (Recommended for Camera/GPS testing)
 
-### 1. Clone & Configure
-```bash
-git clone https://github.com/Ti838/FORENZA-app.git
-cd FORENZA-app
-# Configure environment/dart defines as needed
-```
+### Environment Configuration
+The application connects to the FORENZA Web/Supabase backend. Ensure your environment variables or Dart defines are set to point to your secure API.
 
-### 2. Install Dependencies & Analyze
+### Run Commands
 ```bash
+# 1. Fetch dependencies
 flutter pub get
-flutter analyze
-```
 
-### 3. Run on Device/Emulator
-```bash
+# 2. Run analysis to ensure clean code
+flutter analyze
+
+# 3. Run on connected device
 flutter run
 ```
 
+## 🧪 Testing
+```bash
+# Execute unit and widget tests
+flutter test
+```
+
+## 📦 Building for Production
+```bash
+# Build Android APK (Debug/Testing)
+flutter build apk --debug
+
+# Build Android AppBundle (Google Play Release)
+flutter build appbundle --release
+```
+
+## 🔗 Documentation Links
+For deep dives into specific system components, refer to our detailed documentation:
+- [Architecture & Diagrams](docs/ANDROID_ARCHITECTURE.md)
+- [Security & Threat Model](docs/ANDROID_SECURITY.md)
+- [Offline Vault & Sync Workflow](docs/ANDROID_OFFLINE.md)
+- [Full Features List](docs/ANDROID_FEATURES.md)
+- [Algorithm Audit](ALGORITHM_AUDIT.md)
+
 ---
-
-## 📚 Master Documentation Index
-
-All technical documents are maintained in the `docs/` directory:
-
-- [docs/ANDROID_ARCHITECTURE.md](docs/ANDROID_ARCHITECTURE.md)
-- [docs/ANDROID_SETUP.md](docs/ANDROID_SETUP.md)
-- [docs/ANDROID_FEATURES.md](docs/ANDROID_FEATURES.md)
-- [docs/ANDROID_SECURITY.md](docs/ANDROID_SECURITY.md)
-- [docs/ANDROID_OFFLINE.md](docs/ANDROID_OFFLINE.md)
-- [docs/ANDROID_SYNC.md](docs/ANDROID_SYNC.md)
-- [docs/ANDROID_EVIDENCE_CAPTURE.md](docs/ANDROID_EVIDENCE_CAPTURE.md)
-- [docs/ANDROID_API.md](docs/ANDROID_API.md)
-- [docs/ANDROID_AI.md](docs/ANDROID_AI.md)
-- [docs/ANDROID_TESTING.md](docs/ANDROID_TESTING.md)
-- [docs/ANDROID_BUILD.md](docs/ANDROID_BUILD.md)
-- [docs/ANDROID_PERMISSIONS.md](docs/ANDROID_PERMISSIONS.md)
-
----
-
-## 📜 Proprietary License & Ownership
-
-**Copyright © 2024–2026 Timon Biswas. All Rights Reserved.**  
-**Creator & Sole Rights Holder:** Timon Biswas (`timonbiswas33@gmail.com`)
+*FORENZA System - Field Operations Client*
