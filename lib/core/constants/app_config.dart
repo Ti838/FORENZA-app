@@ -10,6 +10,9 @@ class AppConfig {
 
   // API Base URL
   static String get defaultApiBaseUrl => dotenv.env['API_BASE_URL'] ?? 'http://10.0.2.2:3000/api';
+  
+  // AI Keys
+  static String get geminiApiKey => dotenv.env['GEMINI_API_KEY'] ?? '';
 
   // Geofence defaults
   static const double defaultGeofenceRadiusMeters = 500.0;
