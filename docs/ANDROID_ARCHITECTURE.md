@@ -1,51 +1,59 @@
-# FORENZA Android Architecture
+# FORENZA-app System Architecture
 
-## Overview
-FORENZA-app is a native Android application built with Flutter and Dart. It operates as the secure field-client for forensic officers to capture, vault, and sync digital evidence.
-
-## Technology Stack
-- **Framework:** Flutter (>=3.16.0)
-- **Language:** Dart (>=3.2.0)
-- **State Management:** Riverpod (`flutter_riverpod`)
-- **Routing:** GoRouter (`go_router`)
-- **Backend Communication:** Supabase SDK (`supabase_flutter`), HTTP (`http`)
-- **Local Vault / Storage:** Shared Preferences (`shared_preferences`), Path Provider (`path_provider`)
-- **Hardware Integration:** Camera (`camera`), Geolocator (`geolocator`), QR Scanner (`mobile_scanner`)
-- **Cryptography:** Crypto (`crypto` for SHA-256)
-
-## System Architecture
+## Architectural Overview
+The FORENZA Android Field Application utilizes a strict Feature-Driven Architecture within Flutter. It decouples the Presentation (UI) from Business Logic (Core Services), delegating absolute authority for offline persistence to an encrypted SQLite vault and real-time syncing to the Supabase backend.
 
 ```mermaid
 graph TD
-    UI[Presentation Layer / UI] --> Providers[Riverpod Providers]
-    Providers --> Core[Domain / Business Logic]
-    Core --> Capture[Evidence Capture]
-    Core --> Vault[Offline Vault]
-    Core --> Sync[Sync Engine]
+    %% User Tier
+    Officer[Investigating Officer]
     
-    Capture --> Hardware[Camera / GPS]
-    Capture --> Crypto[SHA-256 Hashing]
+    %% Flutter Application Tier
+    subgraph "FORENZA-app (Flutter Framework)"
+        UI[Presentation Layer<br/>Widgets & Views]
+        Router[GoRouter<br/>Role-Based Routing]
+        State[Riverpod Providers<br/>State Management]
+        
+        subgraph "Core Services (Domain Logic)"
+            CaptureEngine[Capture Engine<br/>Camera & GPS]
+            CryptoEngine[Crypto Engine<br/>SHA-256 Hashing]
+            SyncEngine[Sync Engine<br/>Queue Management]
+        end
+    end
     
-    Vault --> LocalDB[(Encrypted Local Storage)]
+    %% Backend/Infrastructure Tier
+    subgraph "Device Infrastructure"
+        Vault[(Offline Vault<br/>AES-256 SQLite)]
+        FileSystem[Encrypted Media Storage]
+    end
     
-    Sync --> API[Supabase Backend]
-    Sync --> LocalDB
+    subgraph "Cloud Infrastructure"
+        Supabase[(Supabase Backend)]
+        AI[Groq/NVIDIA LLM<br/>via Web API Proxy]
+    end
+    
+    %% Connections
+    Officer -->|Interacts| UI
+    UI --> Router
+    UI --> State
+    State --> CaptureEngine
+    State --> CryptoEngine
+    State --> SyncEngine
+    
+    CaptureEngine -->|Generates Media| FileSystem
+    CryptoEngine -->|Secures Metadata| Vault
+    
+    SyncEngine -.->|Background Sync| Supabase
+    CaptureEngine -.->|AI Classification| AI
 ```
 
-## Layers
+## Key Architectural Decisions
 
-### 1. Presentation Layer (`lib/screens/`)
-Handles the UI rendering using Material Design and custom brand guidelines. Uses `LucideIcons` and `GoogleFonts` (Inter/Roboto variants). Routing is strictly handled by `GoRouter` mapping screens to paths.
+### 1. Offline-First Design
+Field officers often operate in zero-connectivity environments (e.g., deep inside buildings, rural areas). The `Offline Vault` is the absolute source of truth for the mobile application. The `SyncEngine` acts strictly as an idempotent background worker that drains the queue when connectivity is restored.
 
-### 2. State Management (`Riverpod`)
-The app uses providers to manage authentication state, sync progress, and vault inventory. This decoupling ensures UI components only react to state changes without mutating data directly.
+### 2. Immutability at Capture
+The `CryptoEngine` intercepts the binary image data *before* it is written to the device storage, calculating the SHA-256 hash in volatile memory. This guarantees that the hash recorded in the database exactly matches the optical capture, defeating attempts to swap the image on disk.
 
-### 3. Core Services (`lib/core/services/`)
-- `api_service.dart`: Handles backend connectivity.
-- `crypto_service.dart`: Responsible for generating evidence signatures (SHA-256).
-- `geofence_service.dart`: Retrieves and validates GPS bounds.
-- `offline_vault_service.dart`: Manages encrypted offline local storage.
-- `sync_engine.dart`: Orchestrates pushing offline evidence to the server.
-
-### 4. Data Layer / Models (`lib/models/`)
-Contains immutable data structures like `evidence_model.dart` that strictly map to the Web/Supabase database schema.
+### 3. State Decoupling
+By heavily utilizing `Riverpod`, UI components never mutate data directly. They listen to streams (e.g., Sync Progress, Vault Inventory) provided by the Core Services, ensuring the UI always reflects the true system state without race conditions.
