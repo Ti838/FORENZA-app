@@ -9,8 +9,15 @@ import '../../screens/officer/manual_classification_screen.dart';
 import '../../screens/officer/sealed_evidence_screen.dart';
 import '../../screens/officer/emergency_capture_screen.dart';
 import '../../screens/sync/sync_center_screen.dart';
-import '../services/auth_service.dart';
+import '../../screens/vault/vault_dashboard_screen.dart';
+import '../../screens/vault/vault_scan_screen.dart';
+import '../../screens/officer/transfer_screen.dart';
 import '../../screens/officer/live_map_screen.dart';
+import '../../screens/admin/admin_dashboard_screen.dart';
+import '../../screens/compliance/compliance_dashboard_screen.dart';
+import '../../screens/judicial/judicial_dashboard_screen.dart';
+import '../../screens/lab/lab_dashboard_screen.dart';
+import '../../screens/supervisor/supervisor_dashboard_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/officer/dashboard',
@@ -66,6 +73,26 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/officer/map',
       builder: (context, state) => const LiveMapScreen(),
+    ),
+    GoRoute(
+      path: '/admin/dashboard',
+      builder: (context, state) => const AdminDashboardScreen(),
+    ),
+    GoRoute(
+      path: '/compliance/dashboard',
+      builder: (context, state) => const ComplianceDashboardScreen(),
+    ),
+    GoRoute(
+      path: '/judicial/dashboard',
+      builder: (context, state) => const JudicialDashboardScreen(),
+    ),
+    GoRoute(
+      path: '/lab/dashboard',
+      builder: (context, state) => const LabDashboardScreen(),
+    ),
+    GoRoute(
+      path: '/supervisor/dashboard',
+      builder: (context, state) => const SupervisorDashboardScreen(),
     ),
   ],
 );

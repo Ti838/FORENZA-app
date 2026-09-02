@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'app_config.dart';
+import '../constants/app_config.dart';
 import 'offline_vault_service.dart';
 
 class SyncEngine {

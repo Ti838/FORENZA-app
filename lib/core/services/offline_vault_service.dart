@@ -158,14 +158,19 @@ class OfflineVaultService {
     final mediaSha256 = calculateMediaHash(rawMediaBytes);
 
     // 2. Calculate Master Canonical Evidence Hash
-    final masterHash = CryptoService.generateMasterHash(
+    final masterHash = CryptoService.generateEvidenceHash(
       evidenceId: evidenceId,
       caseId: caseId,
+      evidenceNumber: 'TEMP',
       officerId: officerId,
       timestampUtc: now.toIso8601String(),
       latitude: latitude,
       longitude: longitude,
+      gpsAccuracy: locationAccuracy,
       mediaSha256: mediaSha256,
+      mediaType: mediaType,
+      mimeType: mediaType == 'VIDEO' ? 'video/mp4' : 'image/jpeg',
+      fileSizeBytes: rawMediaBytes.length,
     );
 
     // 3. Encrypt and store raw media
